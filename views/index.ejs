@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employee Payroll Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body >
+
+<div class="container">
+
+<div class="header">
+<h1>Employee Payroll Dashboard</h1>
+<a href="/add" class="btn btn-success">+ Add Employee</a>
+</div>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Search employee...">
+</div>
+
+<table id="employeeTable">
+
+<tr>
+<th>Employee ID</th>
+<th>Name</th>
+<th>Department</th>
+<th>Basic Salary</th>
+<th>Tax (12%)</th>
+<th>Net Salary</th>
+<th>Action</th>
+</tr>
+
+<% employees.forEach(emp => { 
+   const tax = emp.salary * 0.12;
+   const netSalary = emp.salary - tax;
+%>
+
+<tr>
+<td><%= emp.id %></td>
+<td><%= emp.name %></td>
+<td><%= emp.department %></td>
+<td>₹ <%= emp.salary %></td>
+<td>₹ <%= tax.toFixed(2) %></td>
+<td>₹ <%= netSalary.toFixed(2) %></td>
+
+<td>
+<a href="/edit/<%= emp.id %>" class="btn btn-primary">Edit</a>
+</td>
+</tr>
+
+<% }) %>
+
+</table>
+
+</div>
+
+<!-- Search Script -->
+<script>
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("keyup", function () {
+  const value = this.value.toLowerCase();
+  const rows = document.querySelectorAll("#employeeTable tr");
+
+  rows.forEach((row, index) => {
+    if (index === 0) return;
+    row.style.display = row.innerText.toLowerCase().includes(value)
+      ? ""
+      : "none";
+  });
+});
+</script>
+
+</body>
+</html>

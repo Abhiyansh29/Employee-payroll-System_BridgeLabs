@@ -1,5 +1,24 @@
 {
   "dependencies": {
+    "ejs": "^4.0.1",
     "express": "^5.2.1"
-  }
+  },
+  "name": "payroll-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abhiyansh29/Employee-payroll-System_BridgeLabs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abhiyansh29/Employee-payroll-System_BridgeLabs/issues"
+  },
+  "homepage": "https://github.com/Abhiyansh29/Employee-payroll-System_BridgeLabs#readme"
 }
