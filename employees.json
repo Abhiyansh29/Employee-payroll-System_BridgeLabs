@@ -1,14 +1,8 @@
 [
   {
-    "id": "EMP-1001",
-    "name": "Abhiyansh Varshney",
-    "department": "cs",
-    "salary": 15000
-  },
-  {
     "id": "EMP-1002",
-    "name": "Vinayak Solanki",
-    "department": "ML",
-    "salary": 25000
+    "name": "Abhiyansh",
+    "department": "cs",
+    "salary": 50000
   }
 ]

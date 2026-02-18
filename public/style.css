@@ -9,18 +9,25 @@
 body {
   font-family: "Segoe UI", sans-serif;
   background: #f4f7fb;
-  padding: 40px;
+  
   /* background-image: linear-gradient(to right,rgb(183, 198, 203),rgb(91, 88, 88), rgb(42, 102, 129)); */
-  background-color: rgb(120, 114, 114);
+  background-color: rgb(217, 215, 215);
+}
+.top{
+    
+  background-color: rgb(167, 166, 166);
+  color: rgb(68, 143, 124);
+  padding:20px;
+  
 }
 
 /* Container */
 .container {
-  max-width: 1100px;
-  margin: auto;
-  background: white;
+
+  
+  background: rgb(217, 215, 215);
   padding: 30px;
-  border-radius: 10px;
+  
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
@@ -41,7 +48,7 @@ h1, h2 {
 }
 
 .btn-primary {
-  background: #2563eb;
+  background: #5e6064;
   color: white;
 }
 
@@ -66,7 +73,7 @@ table {
 }
 
 th {
-  background: #2563eb;
+  background: #521b18;
   color: white;
   padding: 12px;
 }
@@ -77,7 +84,7 @@ td {
 }
 
 tr:hover {
-  background: #f1f5f9;
+  background: #a5a5a5;
 }
 
 /* Form */
@@ -99,12 +106,10 @@ input:focus {
 }
 
 /* Search Bar */
-.search-box {
-  margin: 15px 0;
-}
+
 
 .search-box input {
-  width: 300px;
+  width: 100px;
 }
 
 /* Header Section */
@@ -119,3 +124,27 @@ input:focus {
   display: inline-block;
   margin-top: 10px;
 }
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+.search-box {
+  margin: 20px 0;
+}
+
+.search-box input {
+  width: 350px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.search-box input:focus {
+  outline: none;
+  border: 1px solid #2563eb;
+}
+

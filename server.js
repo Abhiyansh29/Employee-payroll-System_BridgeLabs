@@ -10,15 +10,22 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
 /*
-Generate Unique Employee ID
+==============================
+GENERATE EMPLOYEE ID
+EMP-1001, EMP-1002, EMP-1003
+==============================
 */
 function generateEmployeeId(employees) {
   if (employees.length === 0) return "EMP-1001";
 
-  const lastId = employees[employees.length - 1].id;
-  const number = parseInt(lastId.split("-")[1]);
+  // Extract numbers from all IDs
+  const numbers = employees.map(emp =>
+    parseInt(emp.id.split("-")[1])
+  );
 
-  return `EMP-${number + 1}`;
+  const max = Math.max(...numbers);
+
+  return `EMP-${max + 1}`;
 }
 
 /*
@@ -49,17 +56,24 @@ app.get("/add", (req, res) => {
 
 /*
 ==============================
-ADD EMPLOYEE
+ADD EMPLOYEE (CREATE)
 ==============================
 */
 app.post("/add", async (req, res) => {
+  const { name, department, salary } = req.body;
+
+  // Validation
+  if (!name || name.trim() === "" || salary < 0) {
+    return res.send("Invalid input: Name cannot be empty & salary cannot be negative");
+  }
+
   const employees = await fileHandler.read();
 
   const newEmployee = {
-    id: generateEmployeeId(employees),
-    name: req.body.name,
-    department: req.body.department,
-    salary: Number(req.body.salary)
+    id: generateEmployeeId(employees), // 👈 EMP-1002 format
+    name,
+    department,
+    salary: Number(salary)
   };
 
   employees.push(newEmployee);
@@ -70,12 +84,26 @@ app.post("/add", async (req, res) => {
 
 /*
 ==============================
+DELETE EMPLOYEE
+==============================
+*/
+app.get("/delete/:id", async (req, res) => {
+  let employees = await fileHandler.read();
+
+  employees = employees.filter(emp => emp.id != req.params.id);
+
+  await fileHandler.write(employees);
+  res.redirect("/");
+});
+
+/*
+==============================
 SHOW EDIT FORM
 ==============================
 */
 app.get("/edit/:id", async (req, res) => {
   const employees = await fileHandler.read();
-  const employee = employees.find(e => e.id === req.params.id);
+  const employee = employees.find(emp => emp.id == req.params.id);
 
   if (!employee) return res.send("Employee not found");
 
@@ -88,15 +116,22 @@ UPDATE EMPLOYEE
 ==============================
 */
 app.post("/edit/:id", async (req, res) => {
+  const { name, department, salary } = req.body;
+
+  // Validation
+  if (!name || name.trim() === "" || salary < 0) {
+    return res.send("Invalid input: Name cannot be empty & salary cannot be negative");
+  }
+
   let employees = await fileHandler.read();
 
   employees = employees.map(emp =>
-    emp.id === req.params.id
+    emp.id == req.params.id
       ? {
           ...emp,
-          name: req.body.name,
-          department: req.body.department,
-          salary: Number(req.body.salary)
+          name,
+          department,
+          salary: Number(salary)
         }
       : emp
   );
