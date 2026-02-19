@@ -6,24 +6,41 @@
 </head>
 
 <body>
-<div class="top">
-  <h3>Employee Payroll</h3>
-</div>
-<div class="container">
 
+<div class="top">
+<h3>Employee Payroll</h3>
+</div>
+
+<div class="container1">
+
+    <div class="conChild">
 <h2>Edit Employee</h2>
 
-<form method="POST" class="margin-bottom:10px;">
+<form method="POST" action="/update/<%= employee.id %>">
+
 <input name="name" value="<%= employee.name %>" required>
+
+<label>Profile Image</label>
+<div class="profile-options">
+<label><input type="radio" name="profile" value="1" <%= employee.profile=="1"?"checked":"" %>><img src="/images/p1.png"></label>
+<label><input type="radio" name="profile" value="2" <%= employee.profile=="2"?"checked":"" %>><img src="/images/p2.png"></label>
+<label><input type="radio" name="profile" value="3" <%= employee.profile=="3"?"checked":"" %>><img src="/images/p3.png"></label>
+<label><input type="radio" name="profile" value="4" <%= employee.profile=="4"?"checked":"" %>><img src="/images/p4.png"></label>
+</div>
+
 <input name="department" value="<%= employee.department %>" required>
+
 <input type="number" name="salary" value="<%= employee.salary %>" required>
 
 <button class="btn btn-primary">Update</button>
+
 </form>
 
-<a href="/"><button class="btn btn-primary ">Back</button></a>
+<a href="/"><button class="btn btn-primary">Back</button></a>
 
 </div>
+</div>
+
 
 </body>
 </html>

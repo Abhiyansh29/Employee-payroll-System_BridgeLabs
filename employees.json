@@ -1,8 +1,9 @@
 [
   {
-    "id": "EMP-1002",
-    "name": "Abhiyansh",
-    "department": "cs",
-    "salary": 50000
+    "id": "EMP-1001",
+    "name": "Abhiyansh Varshney",
+    "department": "CS",
+    "salary": 500000,
+    "profile": "2"
   }
 ]

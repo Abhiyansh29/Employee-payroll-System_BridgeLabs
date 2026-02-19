@@ -6,23 +6,38 @@
 </head>
 
 <body>
-<div class="top">
-  <h3>Employee Payroll</h3>
-</div>
-<div class="container">
 
+<div class="top">
+<h3>Employee Payroll</h3>
+</div>
+
+<div class="container1">
+<div class="conChild">
 <h2>Add Employee</h2>
 
 <form method="POST" action="/add">
+
 <input name="name" placeholder="Employee Name" required>
+
+<label>Profile Image</label>
+<div class="profile-options">
+<label><input type="radio" name="profile" value="1" required><img src="/images/p1.png"></label>
+<label><input type="radio" name="profile" value="2"><img src="/images/p2.png"></label>
+<label><input type="radio" name="profile" value="3"><img src="/images/p3.png"></label>
+<label><input type="radio" name="profile" value="4"><img src="/images/p4.png"></label>
+</div>
+
 <input name="department" placeholder="Department" required>
+
 <input type="number" name="salary" placeholder="Basic Salary" required>
 
 <button class="btn btn-success">Save</button>
+
 </form>
 
-<a href="/">← Back</a>
+<a href="/"><button class="btn btn-success" style="background-color:blue;  margin-top: 5px;"> Back</button></a>
 
+</div>
 </div>
 
 </body>

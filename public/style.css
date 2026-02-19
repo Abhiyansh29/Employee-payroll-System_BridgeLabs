@@ -16,8 +16,8 @@ body {
 .top{
     
   background-color: rgb(167, 166, 166);
-  color: rgb(68, 143, 124);
-  padding:20px;
+  color: rgb(16, 58, 48);
+  padding:10px;
   
 }
 
@@ -117,6 +117,7 @@ input:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 /* Back link */
@@ -147,4 +148,50 @@ input:focus {
   outline: none;
   border: 1px solid #2563eb;
 }
+.cards{
+  display:flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+.CardsChild {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  padding: 20px;
+  border: 1px solid black ;
+  border-radius: 5px;
+}
 
+.CardsChild:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(135, 132, 132, 0.15);
+  background: #a0a1a1;
+}
+
+/* profile options */
+.profile-options img{
+width:50px;
+height:50px;
+border-radius:50%;
+margin:10px;
+}
+
+/* table avatar */
+.table-avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+}
+.container1{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  flex-direction: column;
+ 
+}
+.conChild{
+  border: 1px solid black;
+  padding: 50px;
+  border-radius: 5px;
+  
+}

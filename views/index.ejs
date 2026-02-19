@@ -6,31 +6,72 @@
 </head>
 
 <body>
+
 <div class="top">
-  <h3>Employee Payroll</h3>
+  <h2>Employee Payroll</h2>
 </div>
+
 <div class="container">
 
 <div class="header">
 <h4>Employee Details</h4>
+
 <div>
-  <div class="search-box" style="display: inline;">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="🔍Search"
-      >
-      </div>
-  <a href="/add" class="btn btn-success">+ Add Employee</a>
+<div class="search-box" style="display:inline;">
+<input type="text" id="searchInput" placeholder="Search">
+</div>
+
+<a href="/add" class="btn btn-success">+ Add Employee</a>
 </div>
 </div>
 
-<!-- SEARCH BAR -->
+<%
+const totalEmployees = employees.length;
+const departments = [...new Set(employees.map(emp => emp.department))];
+const totalSalary = employees.reduce((sum, emp) => sum + emp.salary, 0);
+const totalTax = employees.reduce((sum, emp) => sum + (emp.salary * 0.12), 0);
+const totalNetSalary = totalSalary - totalTax;
+const avgSalary = totalEmployees ? totalSalary / totalEmployees : 0;
+%>
 
+<div class="cards">
+
+<div class="CardsChild">
+<h4>Total Employees</h4>
+<p><%= totalEmployees %></p>
+</div>
+
+<div class="CardsChild">
+<h4>Departments</h4>
+<p><%= departments.length %></p>
+</div>
+
+<div class="CardsChild">
+<h4>Total Basic Salary</h4>
+<p>₹ <%= totalSalary.toFixed(2) %></p>
+</div>
+
+<div class="CardsChild">
+<h4>Total Tax</h4>
+<p>₹ <%= totalTax.toFixed(2) %></p>
+</div>
+
+<div class="CardsChild">
+<h4>Total Net Salary</h4>
+<p>₹ <%= totalNetSalary.toFixed(2) %></p>
+</div>
+
+<div class="CardsChild">
+<h4>Average Salary</h4>
+<p>₹ <%= avgSalary.toFixed(2) %></p>
+</div>
+
+</div>
 
 <table id="employeeTable">
 
 <tr>
+<th>Profile</th>
 <th>ID</th>
 <th>Name</th>
 <th>Department</th>
@@ -41,23 +82,28 @@
 </tr>
 
 <% employees.forEach(emp => { 
-   const tax = emp.salary * 0.12;
-   const net = emp.salary - tax;
+const tax = emp.salary * 0.12;
+const net = emp.salary - tax;
 %>
 
 <tr>
+
+<td>
+<img src="/images/p<%= emp.profile || 1 %>.png" class="table-avatar">
+</td>
+
 <td><%= emp.id %></td>
 <td><%= emp.name %></td>
-<td style="display:flex; justify-content: center; align-items: center;"><div style="background-color: aquamarine; border:1px solid rgb(103, 132, 103);  border-radius: 10px; padding:2px 10px;"><%= emp.department %></div>
-</td>
+<td><%= emp.department %></td>
 <td>₹ <%= emp.salary %></td>
 <td>₹ <%= tax.toFixed(2) %></td>
-<td>₹ <%= net.toFixed(2) %></td>
+<td style="font-weight:bold;">₹ <%= net.toFixed(2) %></td>
 
 <td>
 <a href="/edit/<%= emp.id %>" class="btn btn-primary">Edit</a>
 <a href="/delete/<%= emp.id %>" class="btn btn-danger">Delete</a>
 </td>
+
 </tr>
 
 <% }) %>
@@ -66,20 +112,18 @@
 
 </div>
 
-<!-- LIVE SEARCH SCRIPT -->
 <script>
-const searchInput = document.getElementById("searchInput");
-const rows = document.querySelectorAll("#employeeTable tr");
+const searchInput=document.getElementById("searchInput");
+const rows=document.querySelectorAll("#employeeTable tr");
 
-searchInput.addEventListener("keyup", function () {
-  const value = this.value.toLowerCase();
+searchInput.addEventListener("keyup",function(){
+const value=this.value.toLowerCase();
 
-  rows.forEach((row, index) => {
-    if (index === 0) return; // skip header
-
-    const text = row.innerText.toLowerCase();
-    row.style.display = text.includes(value) ? "" : "none";
-  });
+rows.forEach((row,index)=>{
+if(index===0)return;
+const text=row.innerText.toLowerCase();
+row.style.display=text.includes(value)?"":"none";
+});
 });
 </script>
 

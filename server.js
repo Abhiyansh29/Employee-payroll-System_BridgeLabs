@@ -1,141 +1,83 @@
-const express = require("express");
-const fileHandler = require("./modules/fileHandler");
+const express=require("express");
+const fs=require("fs");
+const app=express();
 
-const app = express();
-const PORT = 3000;
-
-/* SERVER SETUP */
+app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
-app.set("view engine", "ejs");
-app.use(express.urlencoded({ extended: true }));
+app.set("view engine","ejs");
 
-/*
-==============================
-GENERATE EMPLOYEE ID
-EMP-1001, EMP-1002, EMP-1003
-==============================
-*/
-function generateEmployeeId(employees) {
-  if (employees.length === 0) return "EMP-1001";
-
-  // Extract numbers from all IDs
-  const numbers = employees.map(emp =>
-    parseInt(emp.id.split("-")[1])
-  );
-
-  const max = Math.max(...numbers);
-
-  return `EMP-${max + 1}`;
+/* READ FILE */
+function readEmployees(){
+return JSON.parse(fs.readFileSync("employees.json"));
 }
 
-/*
-START SERVER
-*/
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+/* WRITE FILE */
+function writeEmployees(data){
+fs.writeFileSync("employees.json",JSON.stringify(data,null,2));
+}
+
+/* DASHBOARD */
+app.get("/",(req,res)=>{
+const employees=readEmployees();
+res.render("index",{employees});
 });
 
-/*
-==============================
-DASHBOARD → READ & DISPLAY
-==============================
-*/
-app.get("/", async (req, res) => {
-  const employees = await fileHandler.read();
-  res.render("index", { employees });
+/* ADD PAGE */
+app.get("/add",(req,res)=>{
+res.render("add");
 });
 
-/*
-==============================
-SHOW ADD FORM
-==============================
-*/
-app.get("/add", (req, res) => {
-  res.render("add");
+/* ADD EMPLOYEE */
+app.post("/add",(req,res)=>{
+const employees=readEmployees();
+
+const newEmployee={
+id:"EMP-"+(employees.length+1001),
+name:req.body.name,
+department:req.body.department,
+salary:Number(req.body.salary),
+profile:req.body.profile
+};
+
+employees.push(newEmployee);
+writeEmployees(employees);
+res.redirect("/");
 });
 
-/*
-==============================
-ADD EMPLOYEE (CREATE)
-==============================
-*/
-app.post("/add", async (req, res) => {
-  const { name, department, salary } = req.body;
-
-  // Validation
-  if (!name || name.trim() === "" || salary < 0) {
-    return res.send("Invalid input: Name cannot be empty & salary cannot be negative");
-  }
-
-  const employees = await fileHandler.read();
-
-  const newEmployee = {
-    id: generateEmployeeId(employees), // 👈 EMP-1002 format
-    name,
-    department,
-    salary: Number(salary)
-  };
-
-  employees.push(newEmployee);
-  await fileHandler.write(employees);
-
-  res.redirect("/");
+/* DELETE */
+app.get("/delete/:id",(req,res)=>{
+let employees=readEmployees();
+employees=employees.filter(emp=>emp.id!==req.params.id);
+writeEmployees(employees);
+res.redirect("/");
 });
 
-/*
-==============================
-DELETE EMPLOYEE
-==============================
-*/
-app.get("/delete/:id", async (req, res) => {
-  let employees = await fileHandler.read();
-
-  employees = employees.filter(emp => emp.id != req.params.id);
-
-  await fileHandler.write(employees);
-  res.redirect("/");
+/* EDIT PAGE */
+app.get("/edit/:id",(req,res)=>{
+const employees=readEmployees();
+const employee=employees.find(e=>e.id===req.params.id);
+res.render("edit",{employee});
 });
 
-/*
-==============================
-SHOW EDIT FORM
-==============================
-*/
-app.get("/edit/:id", async (req, res) => {
-  const employees = await fileHandler.read();
-  const employee = employees.find(emp => emp.id == req.params.id);
+/* UPDATE */
+app.post("/update/:id",(req,res)=>{
+let employees=readEmployees();
 
-  if (!employee) return res.send("Employee not found");
-
-  res.render("edit", { employee });
+employees=employees.map(emp=>{
+if(emp.id===req.params.id){
+return{
+...emp,
+name:req.body.name,
+department:req.body.department,
+salary:Number(req.body.salary),
+profile:req.body.profile
+};
+}
+return emp;
 });
 
-/*
-==============================
-UPDATE EMPLOYEE
-==============================
-*/
-app.post("/edit/:id", async (req, res) => {
-  const { name, department, salary } = req.body;
-
-  // Validation
-  if (!name || name.trim() === "" || salary < 0) {
-    return res.send("Invalid input: Name cannot be empty & salary cannot be negative");
-  }
-
-  let employees = await fileHandler.read();
-
-  employees = employees.map(emp =>
-    emp.id == req.params.id
-      ? {
-          ...emp,
-          name,
-          department,
-          salary: Number(salary)
-        }
-      : emp
-  );
-
-  await fileHandler.write(employees);
-  res.redirect("/");
+writeEmployees(employees);
+res.redirect("/");
 });
+
+app.listen(3000,()=>console.log("Server running on port 3000"));
